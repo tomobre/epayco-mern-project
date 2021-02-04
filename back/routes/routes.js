@@ -38,13 +38,12 @@ router.put(`/updatewallet`, async (req, res) => {
   }
 });
 
-router.get(`/check`, async (req, res) => {
+router.get(`/:document`, async (req, res) => {
+  const document = req.params.document;
   try {
     const checkWallet = await userModelsCopy.findOne({
-      document: req.body.document,
-      cellphone: req.body.cellphone,
+      document: document,
     });
-    console.log(checkWallet);
     checkWallet
       .save()
       .then((data) => {
@@ -53,6 +52,7 @@ router.get(`/check`, async (req, res) => {
       .catch((err) => {
         res.json(err);
       });
+    console.log(checkWallet);
   } catch (err) {
     console.log(err);
   }
