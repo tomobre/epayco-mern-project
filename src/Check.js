@@ -39,7 +39,7 @@ function Check() {
           Enter
         </button>
       </form>
-      {wallet !== undefined && <h1>Su sueldo es de {wallet}$</h1>}
+      {wallet !== undefined && <h1>Su saldo es de {wallet}$</h1>}
     </div>
   );
 }
