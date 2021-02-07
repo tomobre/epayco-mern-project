@@ -7,6 +7,7 @@ const userModels = new mongoose.Schema({
   cellphone: { type: Number, require: true },
   date: { type: Date, default: Date.now },
   wallet: { type: Number, default: 0 },
+  buyToken: { type: String, default: "" },
 });
 
 module.exports = mongoose.model("usuarios", userModels);
