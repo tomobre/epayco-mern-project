@@ -2,10 +2,12 @@ import "./App.css";
 import React from "react";
 import axios from "axios";
 import { uid } from "rand-token";
+import { useForm } from "react-hook-form";
 
 function Buy() {
+  const { register, errors, handleSubmit } = useForm();
   let userInfo;
-  const [conf, setConf] = React.useState({ conf: false });
+  const [conf, setConf] = React.useState({ conf: false, mes: "" });
   const [insertEmail, setInsertEmail] = React.useState({ insertEmail: false });
   const [whichSer, setWhichSer] = React.useState({ whichSer: "" });
   const [captureEmail, setCaptureEmail] = React.useState({ captureEmail: "" });
@@ -22,26 +24,37 @@ function Buy() {
   };
 
   const handleClickConf = async () => {
+    setConf({
+      conf: false,
+      mes: "",
+    });
     const confirming = window.confirm(
       `Esta seguro que desea comprar el servicio ${whichSer.whichSer}?`
     );
     if (confirming) {
-      setConf({ conf: true });
       console.log("confirmed");
-    }
 
-    try {
-      let res = await axios.get(
-        `http://localhost:4000/app/em/${captureEmail.captureEmail}`
-      );
-      userInfo = await res.data;
-      setId({ id: userInfo._id });
-      setWallet({ wallet: userInfo.wallet });
-      console.log(userInfo);
-    } catch (err) {
-      console.log(err);
+      try {
+        let res = await axios.get(
+          `http://localhost:4000/app/em/${captureEmail.captureEmail}`
+        );
+        userInfo = await res.data;
+        setId({ id: userInfo._id });
+        setWallet({ wallet: userInfo.wallet });
+        console.log(userInfo);
+        setConf({
+          conf: true,
+          mes:
+            "Se generó un TOKEN y un ID que se ha enviado a su cuenta de mail. Ingreselo para confirmar la compra.",
+        });
+      } catch (err) {
+        console.log(err);
+        setConf({
+          conf: "error",
+          mes: `Hubo un error con el mail del usuario elegido: ${err}`,
+        });
+      }
     }
-
     try {
       const token = uid(6);
       let res = await axios.put(`http://localhost:4000/app/gettoken`, {
@@ -133,6 +146,21 @@ function Buy() {
       {insertEmail.insertEmail && (
         <div>
           <input
+            ref={register({
+              required: { value: true, message: "El email es obligatorio" },
+              maxLength: {
+                value: 30,
+                message: "No más de 30 caracteres",
+              },
+              minLength: {
+                value: 5,
+                message: "Mínimo 2 caracteres",
+              },
+              pattern: {
+                value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                message: "Debe ser un email valido",
+              },
+            })}
             name="captureEmail"
             value={captureEmail.captureEmail}
             onChange={handleChange()}
@@ -142,18 +170,19 @@ function Buy() {
           <button
             className="ms-4 btn btn-primary"
             type="button"
-            onClick={handleClickConf}
+            onClick={handleSubmit(handleClickConf)}
           >
             Comprar
           </button>
+          <br />
+          <span className="text-danger text-small d-block mb-2">
+            {errors.captureEmail && errors.captureEmail.message}
+          </span>
         </div>
       )}
-      {conf.conf && (
+      {conf.conf === true && (
         <div>
-          <p className="mt-4 mb-5">
-            Se generó un TOKEN y un ID que se ha enviado a su cuenta de mail.
-            Ingreselo para confirmar la compra.
-          </p>
+          <p className="mt-4 mb-5">{conf.mes}</p>
           <input
             className="me-5"
             value={captureId.captureId}
@@ -163,6 +192,7 @@ function Buy() {
             type="text"
           />
           <input
+            className="mt-3"
             value={captureToken.captureToken}
             onChange={handleChange()}
             name="captureToken"
@@ -178,6 +208,9 @@ function Buy() {
             {response.response}
           </div>
         </div>
+      )}
+      {conf.conf === "error" && (
+        <span className="text-danger text-small d-block mt-2">{conf.mes}</span>
       )}
     </div>
   );
