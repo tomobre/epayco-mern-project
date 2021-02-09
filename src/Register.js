@@ -54,37 +54,44 @@ function Register() {
 
   return (
     <div>
-      <h1>Registro</h1>
+      <h1 className="my-5">Registro</h1>
       <form>
         <input
           onChange={handleChange()}
           value={name.name}
           name="name"
-          placeholder="nombre"
+          placeholder="Nombre"
           type="text"
+          className="me-4"
         ></input>
         <input
           name="document"
           onChange={handleChange()}
           value={document.document}
-          placeholder="documento"
+          placeholder="Documento"
           type="number"
+          className="me-4"
         />
         <input
           onChange={handleChange()}
           value={email.email}
           name="email"
-          placeholder="email"
+          placeholder="Email"
           type="text"
+          className="me-4"
         ></input>
         <input
           onChange={handleChange()}
           value={cellphone.cellphone}
           name="cellphone"
-          placeholder="celular"
+          placeholder="Celular"
           type="number"
+          className="me-4"
         ></input>
-        <button onClick={onSubmit}>Registrarse</button>
+        <br />
+        <button className="mt-4 btn btn-primary" onClick={onSubmit}>
+          Registrarse
+        </button>
       </form>
     </div>
   );

@@ -63,35 +63,43 @@ function LoadWallet() {
 
   return (
     <div>
-      <h1>Cargar billetera</h1>
+      <h1 className="my-5">Cargar saldo</h1>
       <form>
         <input
+          className="me-5"
           value={document.document}
           onChange={handleChange()}
           name="document"
-          placeholder="documento"
+          placeholder="Documento"
           type="text"
         />
         <input
+          className="me-5"
           value={cellphone.cellphone}
           onChange={handleChange()}
           name="cellphone"
-          placeholder="celular"
+          placeholder="Celular"
           type="text"
         ></input>
         <input
+          className="me-5"
           value={value.value}
           onChange={handleChange()}
           name="value"
-          placeholder="valor"
+          placeholder="Valor"
           type="text"
         ></input>
-        <button type="button" onClick={onSubmit}>
-          Enter
+        <br />
+        <button
+          className="mt-4 btn btn-primary"
+          type="button"
+          onClick={onSubmit}
+        >
+          CARGAR
         </button>
       </form>
 
-      {updated && <h1>Su nuevo saldo es de {final}$</h1>}
+      {updated && <h3 className="mt-4">Su nuevo saldo es de {final}$</h3>}
     </div>
   );
 }

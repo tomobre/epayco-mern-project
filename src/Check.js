@@ -26,20 +26,27 @@ function Check() {
 
   return (
     <div>
-      <h1>consultar saldo</h1>
+      <h1 className="my-5">Consultar saldo</h1>
       <form>
         <input
           value={document.document}
           onChange={handleChange()}
           name="document"
-          placeholder="documento"
+          placeholder="Documento"
           type="number"
         />
-        <button type="button" onClick={onSubmit}>
-          Enter
+        <br />
+        <button
+          className="btn btn-primary mt-3"
+          type="button"
+          onClick={onSubmit}
+        >
+          CONSULTAR
         </button>
       </form>
-      {wallet !== undefined && <h1>Su saldo es de {wallet}$</h1>}
+      {wallet !== undefined && (
+        <h3 className="mt-3">Su saldo es de {wallet}$</h3>
+      )}
     </div>
   );
 }

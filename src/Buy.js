@@ -114,11 +114,19 @@ function Buy() {
 
   return (
     <div>
-      <h1>Comprar</h1>
-      <button onClick={handleClickBuy()} name="1">
+      <h1 className="my-5">Comprar</h1>
+      <button
+        className="me-4 mb-5 btn btn-secondary"
+        onClick={handleClickBuy()}
+        name="1"
+      >
         Servicio 1
       </button>
-      <button onClick={handleClickBuy()} name="2">
+      <button
+        onClick={handleClickBuy()}
+        name="2"
+        className="me-4 mb-5 btn btn-secondary"
+      >
         {" "}
         Servicio 2
       </button>
@@ -129,36 +137,46 @@ function Buy() {
             value={captureEmail.captureEmail}
             onChange={handleChange()}
             type="text"
-            placeholder="mail del usuario"
+            placeholder="Mail del usuario"
           ></input>
-          <button type="button" onClick={handleClickConf}>
+          <button
+            className="ms-4 btn btn-primary"
+            type="button"
+            onClick={handleClickConf}
+          >
             Comprar
           </button>
         </div>
       )}
       {conf.conf && (
         <div>
-          <h2>
-            Se generó un token y un id especial que se ha mandado a su cuenta de
-            mail. Ingreselo para confirmar la compra
-          </h2>
+          <p className="mt-4 mb-5">
+            Se generó un TOKEN y un ID que se ha enviado a su cuenta de mail.
+            Ingreselo para confirmar la compra.
+          </p>
           <input
+            className="me-5"
             value={captureId.captureId}
             onChange={handleChange()}
             name="captureId"
-            placeholder="id"
+            placeholder="ID"
             type="text"
           />
           <input
             value={captureToken.captureToken}
             onChange={handleChange()}
             name="captureToken"
-            placeholder="token"
+            placeholder="TOKEN"
             type="text"
           />
-          <button onClick={confirmToken}>Confirmar compra</button>
+          <br />
+          <button className="btn btn-primary mt-5" onClick={confirmToken}>
+            Confirmar compra
+          </button>
 
-          <div id="okBuyOrNot">{response.response}</div>
+          <div className="mt-4" id="okBuyOrNot">
+            {response.response}
+          </div>
         </div>
       )}
     </div>
