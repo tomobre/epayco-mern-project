@@ -50,8 +50,10 @@ function Register() {
         setRes({ res: `Te has registrado con exito` });
       })
       .catch((err) => {
-        console.log(err);
-        setRes({ res: `Hubo un error en el registro: ${err}` });
+        console.log(err.response.data);
+        setRes({
+          res: `Hubo un error en el registro: ${err.response.data.error.message}`,
+        });
       });
 
     setName({ name: "" });

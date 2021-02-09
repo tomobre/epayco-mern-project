@@ -3,35 +3,58 @@ const router = express.Router();
 const userModelsCopy = require("../models/UserModels");
 const nodemailer = require("nodemailer");
 
-router.post("/signup", (req, res) => {
-  const signedUpUser = new userModelsCopy({
-    name: req.body.name,
-    document: req.body.document,
-    email: req.body.email,
-    cellphone: req.body.cellphone,
-  });
-  signedUpUser
-    .save()
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.json({ message: "Ya existe el usuario", err: err });
+router.post("/signup", async (req, res, next) => {
+  try {
+    const checkIfEmail = await userModelsCopy.findOne({
+      email: req.body.email,
     });
+    const checkIfDocument = await userModelsCopy.findOne({
+      document: req.body.document,
+    });
+    const checkIfCellphone = await userModelsCopy.findOne({
+      cellphone: req.body.cellphone,
+    });
+
+    if (
+      checkIfEmail !== null ||
+      checkIfDocument !== null ||
+      checkIfCellphone !== null
+    ) {
+      next(new Error("El mail, documento, o celular ya existe"));
+    } else {
+      const signedUpUser = new userModelsCopy({
+        name: req.body.name,
+        document: req.body.document,
+        email: req.body.email,
+        cellphone: req.body.cellphone,
+      });
+      signedUpUser
+        .save()
+        .then((data) => {
+          res.json(data);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.json({
+            message: "ocurrio un error con la base de datos",
+            err: err,
+          });
+        });
+    }
+  } catch (err) {
+    res.json({ message: "ocurrio un error en la base de datos", err: err });
+  }
 });
 
-router.put(`/updatewallet`, async (req, res) => {
+router.put(`/updatewallet`, async (req, res, next) => {
   try {
     const updateUser = await userModelsCopy.findOneAndUpdate(
       { document: req.body.document, cellphone: req.body.cellphone },
       { wallet: req.body.wallet },
       (err, data) => {
         if (data === null) {
-          res.json({
-            message: "No existe el documento/celular correspondiente",
-            err: err,
-          });
+          next(new Error("No existe el documento/celular correspondiente"));
+
           console.log({
             message: "no existe el documento/celular correspondiente",
             err: err,
@@ -45,46 +68,44 @@ router.put(`/updatewallet`, async (req, res) => {
   } catch (err) {}
 });
 
-router.get(`/:document`, async (req, res) => {
+router.get(`/:document`, async (req, res, next) => {
   const document = req.params.document;
   try {
     const checkWallet = await userModelsCopy.findOne({
       document: document,
     });
-    checkWallet.save();
-    res.json(checkWallet);
-    console.log(checkWallet);
+    if (checkWallet !== null) {
+      res.json(checkWallet);
+      console.log(checkWallet);
+    } else {
+      next(new Error("No existe el documento en la base de datos"));
+    }
   } catch (err) {
     console.log({
-      message: "No existe el documento en la base de datos",
-      err: err,
-    });
-    res.json({
-      message: "No existe el documento en la base de datos",
+      message: "Hay un problema con la base de datos",
       err: err,
     });
   }
 });
 
-router.get(`/em/:email`, async (req, res) => {
+router.get(`/em/:email`, async (req, res, next) => {
   const email = req.params.email;
   try {
     const checkEmail = await userModelsCopy.findOne({
       email: email,
     });
-    checkEmail.save();
-    console.log(checkEmail);
-    res.json(checkEmail);
+    if (checkEmail !== null) {
+      console.log(checkEmail);
+      res.json(checkEmail);
+    } else {
+      next(new Error("No existe el mail en la base de datos."));
+    }
   } catch (err) {
     console.log(err);
-    res.json({
-      message: "No existe el email en la base de datos",
-      err: err,
-    });
   }
 });
 
-router.put(`/gettoken`, async (req, res) => {
+router.put(`/gettoken`, async (req, res, next) => {
   try {
     const updateUserToken = await userModelsCopy.findOneAndUpdate(
       { email: req.body.email },
@@ -95,10 +116,7 @@ router.put(`/gettoken`, async (req, res) => {
             message: "El email no existe en la base de datos",
             err: err,
           });
-          res.json({
-            message: "El email no existe en la base de datos",
-            err: err,
-          });
+          next(new Error("El mail no existe en la base de datos"));
         } else {
           console.log(data);
           let transporter = nodemailer.createTransport({
@@ -134,17 +152,14 @@ router.put(`/gettoken`, async (req, res) => {
   } catch (err) {}
 });
 
-router.put(`/buyupdatewallet`, async (req, res) => {
+router.put(`/buyupdatewallet`, async (req, res, next) => {
   try {
     const updateWallet = await userModelsCopy.findOneAndUpdate(
       { email: req.body.email },
       { wallet: req.body.wallet },
       (err, data) => {
         if (data === null) {
-          res.json({
-            message: "no existe el email en la base de datos",
-            err: err,
-          });
+          next(new Error("No existe el email en la base de datos"));
         } else {
           console.log(data);
           res.json(data);

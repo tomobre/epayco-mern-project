@@ -28,7 +28,7 @@ function Check() {
     } catch (err) {
       setResponse({
         response: false,
-        message: `Hubo un error al intentar ver su saldo: ${err} `,
+        message: `Hubo un error al intentar ver su saldo: ${err.response.data.error.message} `,
       });
       console.log(err);
     }

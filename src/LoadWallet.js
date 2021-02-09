@@ -16,10 +16,7 @@ function LoadWallet() {
   const [value, setValue] = React.useState({
     value: "",
   });
-  const [bringUser, setBringUser] = React.useState({
-    response: "",
-    message: "",
-  });
+
   const [updated, setUpdated] = React.useState({
     response: "",
     message: "",
@@ -36,10 +33,8 @@ function LoadWallet() {
   };
 
   const onSubmit = async () => {
-    setBringUser({ response: "", message: "" });
     setUpdated({ response: "", message: `` });
     try {
-      setBringUser({ response: true, message: "" });
       let res = await axios.get(
         `http://localhost:4000/app/${document.document}`
       );
@@ -47,10 +42,6 @@ function LoadWallet() {
 
       console.log(bringWallet);
     } catch (err) {
-      setBringUser({
-        response: false,
-        message: `Hubo un error con los datos del usuario: ${err}`,
-      });
       console.log(err);
     }
 
@@ -65,11 +56,11 @@ function LoadWallet() {
       });
       final = await res.data.wallet;
       console.log(final);
-      setUpdated({ response: true, message: `Su nuevo saldo es de ${final}` });
+      setUpdated({ response: true, message: `Su nuevo saldo es de ${final}$` });
     } catch (err) {
       setUpdated({
         response: false,
-        message: `Hubo un error intentando cargar su saldo: ${err}`,
+        message: `Hubo un error intentando cargar su saldo: ${err.response.data.error.message}`,
       });
       console.log(err);
     }
@@ -152,12 +143,8 @@ function LoadWallet() {
             Hubo un error al intentar cargar su saldo
           </span>
         )}
-        {bringUser === false && (
-          <span className="text-danger text-small d-block mb-2">
-            {bringUser.message}
-          </span>
-        )}
-        {updated.updated === false && (
+
+        {updated.response === false && (
           <span className="text-danger text-small d-block mb-2">
             {updated.message}
           </span>
@@ -170,7 +157,7 @@ function LoadWallet() {
           CARGAR
         </button>
       </form>
-      {updated.updated === true && <h3 className="mt-2">{updated.message}</h3>}
+      {updated.response === true && <h3 className="mt-2">{updated.message}</h3>}
     </div>
   );
 }

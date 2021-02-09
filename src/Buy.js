@@ -51,7 +51,7 @@ function Buy() {
         console.log(err);
         setConf({
           conf: "error",
-          mes: `Hubo un error con el mail del usuario elegido: ${err}`,
+          mes: `Hubo un error con el mail del usuario elegido: ${err.response.data.error.message}`,
         });
       }
     }
@@ -133,7 +133,8 @@ function Buy() {
         onClick={handleClickBuy()}
         name="1"
       >
-        Servicio 1
+        Servicio 1 <br />
+        (100$)
       </button>
       <button
         onClick={handleClickBuy()}
@@ -141,7 +142,8 @@ function Buy() {
         className="me-4 mb-5 btn btn-secondary"
       >
         {" "}
-        Servicio 2
+        Servicio 2 <br />
+        (200$)
       </button>
       {insertEmail.insertEmail && (
         <div>
