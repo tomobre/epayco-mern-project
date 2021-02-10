@@ -21,7 +21,7 @@ function Check() {
     });
     try {
       let res = await axios.get(
-        `http://localhost:4000/app/${document.document}`
+        `https://mern-project-epayco.herokuapp.com/app/${document.document}`
       );
       wallet = await res.data.wallet;
       setResponse({ response: true, message: `Su saldo es de ${wallet}$ ` });

@@ -44,7 +44,7 @@ function Register() {
     };
 
     axios
-      .post("http://localhost:4000/app/signup", register)
+      .post("https://mern-project-epayco.herokuapp.com/app/signup", register)
       .then((res) => {
         console.log(res.data);
         setRes({ res: `Te has registrado con exito` });

@@ -36,7 +36,7 @@ function Buy() {
 
       try {
         let res = await axios.get(
-          `http://localhost:4000/app/em/${captureEmail.captureEmail}`
+          `https://mern-project-epayco.herokuapp.com/app/em/${captureEmail.captureEmail}`
         );
         userInfo = await res.data;
         setId({ id: userInfo._id });
@@ -57,10 +57,13 @@ function Buy() {
     }
     try {
       const token = uid(6);
-      let res = await axios.put(`http://localhost:4000/app/gettoken`, {
-        email: captureEmail.captureEmail,
-        buyToken: token,
-      });
+      let res = await axios.put(
+        `https://mern-project-epayco.herokuapp.com/app/gettoken`,
+        {
+          email: captureEmail.captureEmail,
+          buyToken: token,
+        }
+      );
       let check = await res.data;
       setTokenCheck(check.buyToken);
     } catch (err) {
@@ -103,7 +106,7 @@ function Buy() {
           setWallet({ wallet: finalWallet });
 
           let res = await axios.put(
-            `http://localhost:4000/app/buyupdatewallet`,
+            `https://mern-project-epayco.herokuapp.com/app/buyupdatewallet`,
             {
               email: captureEmail.captureEmail,
               wallet: finalWallet,

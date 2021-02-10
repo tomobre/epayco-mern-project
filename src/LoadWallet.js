@@ -36,7 +36,7 @@ function LoadWallet() {
     setUpdated({ response: "", message: `` });
     try {
       let res = await axios.get(
-        `http://localhost:4000/app/${document.document}`
+        `https://mern-project-epayco.herokuapp.com/app/${document.document}`
       );
       bringWallet = await res.data.wallet;
 
@@ -49,11 +49,14 @@ function LoadWallet() {
       const newValue = parseInt(value.value, 10) + bringWallet;
       final = newValue;
       console.log(newValue);
-      let res = await axios.put(`http://localhost:4000/app/updatewallet`, {
-        document: document.document,
-        cellphone: cellphone.cellphone,
-        wallet: newValue,
-      });
+      let res = await axios.put(
+        `https://mern-project-epayco.herokuapp.com/app/updatewallet`,
+        {
+          document: document.document,
+          cellphone: cellphone.cellphone,
+          wallet: newValue,
+        }
+      );
       final = await res.data.wallet;
       console.log(final);
       setUpdated({ response: true, message: `Su nuevo saldo es de ${final}$` });
