@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/epayco-mern-project/static/css/main.bc92627c.chunk.css",
-    "main.js": "/epayco-mern-project/static/js/main.8055859d.chunk.js",
-    "main.js.map": "/epayco-mern-project/static/js/main.8055859d.chunk.js.map",
+    "main.js": "/epayco-mern-project/static/js/main.de1e493e.chunk.js",
+    "main.js.map": "/epayco-mern-project/static/js/main.de1e493e.chunk.js.map",
     "runtime-main.js": "/epayco-mern-project/static/js/runtime-main.5c11218b.js",
     "runtime-main.js.map": "/epayco-mern-project/static/js/runtime-main.5c11218b.js.map",
     "static/js/2.7ab63542.chunk.js": "/epayco-mern-project/static/js/2.7ab63542.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.5c11218b.js",
     "static/js/2.7ab63542.chunk.js",
     "static/css/main.bc92627c.chunk.css",
-    "static/js/main.8055859d.chunk.js"
+    "static/js/main.de1e493e.chunk.js"
   ]
 }
